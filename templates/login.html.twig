@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+{% if error %}
+    <h6>{{ error.messageKey|trans(error.messageData, 'security') }}
+{% endif %}
 <h1>Zombies Card Companion</h1>
-{{
-    form(loginForm)
-}}
+    {{ form_start(loginForm) }}
+        {{ form_row(loginForm.username, {
+            'attr': {
+                'name': '_username',
+            }
+        }) }}
+        <button value="login_submit">Login</button>
+
+    {{ form_end(loginForm) }}
 {% endblock %}

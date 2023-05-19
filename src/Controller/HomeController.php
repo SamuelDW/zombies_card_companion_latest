@@ -11,11 +11,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class LoginController extends AbstractController
+// #[IsGranted('ROLE_ADMIN')]
+class HomeController extends AbstractController
 {
-    #[Route('/', name: 'login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Route('/home', name: 'home')]
+    public function home(AuthenticationUtils $authenticationUtils): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+        dd('here');
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsernameEntered = $authenticationUtils->getLastUsername();
         $loginForm = $this->createForm(LoginType::class);
@@ -26,11 +29,6 @@ class LoginController extends AbstractController
         //     dd($loginInformation);
         // }
 
-        return $this->renderForm('login.html.twig', [
-            'controller_name' => 'LoginController',
-            'last_username' => $lastUsernameEntered,
-            'error' => $error,
-            'loginForm' => $loginForm,
-        ]);
+        return $this->render('home.html.twig');
     }
 }

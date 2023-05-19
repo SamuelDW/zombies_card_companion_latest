@@ -11,17 +11,35 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class LoginType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public const FORM_NAME = 'loginForm';
+
+    /**
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<string, mixed> $options
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('username', TextType::class, [
                 'required' => true,
                 'label' => 'Username/Email',
+                'attr' => [
+                    'name' => '_username',
+                ],
             ])
             ->add('password', PasswordType::class, [
                 'required' => true,
                 'label' => 'Password',
-            ])
-            ->add('Login', SubmitType::class);
+                'attr' => [
+                    'name' => '_password',
+                ],
+            ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return self::FORM_NAME;
     }
 }
